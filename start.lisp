@@ -141,8 +141,9 @@
 
   (defparameter *loaded-from-core* t)
   (format t "~2%saving a core with ~{~A~^ ~}...~2%" (mapcar #'package-name (list-all-packages)))
-  (ensure-directories-exist "/mnt/projects/cores/")
-  (save-lisp-and-die (format nil "/mnt/projects/cores/~(~A.core~)" *project*)))
+  (let ((path (format nil "~A/.cache/common-lisp/cores/" (user-homedir-pathname))))
+    (ensure-directories-exist path)
+    (save-lisp-and-die (format nil "~A~(~A.core~)" path *project*))))
 
 (format t "PID ~A~%" (sb-unix:unix-getpid))
 
