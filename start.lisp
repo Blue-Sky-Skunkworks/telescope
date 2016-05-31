@@ -140,7 +140,12 @@
               (sb-ext:exit :code -1)))))))
 
   (defparameter *loaded-from-core* t)
-  (format t "~2%saving a core with ~{~A~^ ~}...~2%" (mapcar #'package-name (list-all-packages)))
+  (format t "~2%saving a core with ~%")
+  (loop for package in (list-all-packages)
+        for index from 1
+        do (format t "  ~(~A~)" (package-name package))
+           (when (= 0 (mod index 5)) (terpri)))
+  (terpri)
   (let ((path (format nil "~A/.cache/common-lisp/cores/" (user-homedir-pathname))))
     (ensure-directories-exist path)
     (save-lisp-and-die (format nil "~A~(~A.core~)" path *project*))))

@@ -21,7 +21,7 @@ fi
 fi
 
 /usr/local/bin/sbcl \
-  --core "/mnt/projects/cores/telescope.core" \
+  --core "$HOME/.cache/common-lisp/cores/telescope.core" \
   --noinform \
   --dynamic-space-size 1024 \
   --eval "(progn (defparameter cl-user::*project* :telescope) (load \"start.lisp\") (in-package :telescope))" \
