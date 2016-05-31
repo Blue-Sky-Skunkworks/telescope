@@ -106,7 +106,7 @@
     (cdr (assoc 'asdf:load-op (asdf:component-depends-on 'asdf:prepare-op (asdf:find-system system)))))
 
   (defparameter *excluded-libraries*
-    '(:helpers :deck-client :event-client :sail))
+    '())
 
   (defun support-libraries (systems)
     (loop for system in systems
@@ -126,8 +126,9 @@
               current-library)
           (handler-case
               (dolist (m (support-libraries (cons *project* *excluded-libraries*)))
-                (unless (member m *excluded-libraries*)
+                (unless (member m *excluded-libraries* :test 'string-equal)
                   (setf current-library m)
+                  (format *original-standard-output* "~%Loading ~A " m)
                   (require m)))
             (error (c)
               (format *original-standard-output*
@@ -139,7 +140,7 @@
               (sb-ext:exit :code -1)))))))
 
   (defparameter *loaded-from-core* t)
-  (format t "~2%saving a core...~2%")
+  (format t "~2%saving a core with ~{~A~^ ~}...~2%" (mapcar #'package-name (list-all-packages)))
   (ensure-directories-exist "/mnt/projects/cores/")
   (save-lisp-and-die (format nil "/mnt/projects/cores/~(~A.core~)" *project*)))
 
