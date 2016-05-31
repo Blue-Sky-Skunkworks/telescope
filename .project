@@ -1,0 +1,1 @@
+(telescope sbcl ("telescope") "Welcome to Telescope!" #\TELESCOPE "purple")
